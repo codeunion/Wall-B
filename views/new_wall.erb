@@ -2,16 +2,10 @@
 <form method="POST" action="/walls">
   <label>Title:
     <input type="text" name="wall[title]" value="<%=@wall.title%>" />
-    <!-- The `[]`s in the "name" attribute here indicate that `params[:wall]` is
-    going to be a hash with a key of "title" and a value of whatever the user
-    puts in -->
   </label><br />
 
   <label>Description:
     <textarea name="wall[description]"><%=@wall.description%></textarea>
-    <!-- We can add even more keys to the hash that will become `params[:wall]`;
-         in this case, we now have params[:wall]["description"] available in our
-         available in our route -->
   </label><br />
 
   <label>Owner:
