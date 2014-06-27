@@ -1,3 +1,3 @@
-require './app'
+require './wall'
 
 run Sinatra::Application

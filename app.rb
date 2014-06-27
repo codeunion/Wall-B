@@ -1,41 +1,45 @@
 require 'sinatra'
 
-require 'data_mapper'
-DataMapper.setup(:default, "sqlite:scratch.db")
+# a wall has...
+# a person it was created by, a title, a description, likes
+# wouldn't it be nice to know when created and when edited?
 
-class Wall
-  include DataMapper::Resource
-  property :id,          Serial
-  property :created_by, String
-  property :title, String
-  property :description, Text
-  property :likes, Integer
-  property :created_at, DateTime
+
+# populate the 'wall'
+def get_walls
+  wall = []
+  3.times do |n|
+    wall.push({:created_by => "#{n} davison", :description => "for memes n stuff#{n}", :title => "3#{n} luve kittehs", :likes => n})
+  end
+  wall
 end
 
-DataMapper.finalize
-DataMapper.auto_upgrade!
-
+# read
 get "/" do
-  @walls = Wall.all
+  p "params are #{params}"
+  @walls = get_walls
+  p @walls
   erb :home
 end
 
+# create
 get "/walls/new" do
-  @wall = Wall.new
+  @wall = {}
+  @walls = get_walls
   erb :new_wall
 end
 
+# update?
 post "/walls" do
-  wall_attributes = params["wall"]
-  wall_attributes["created_at"] = DateTime.now
-  @wall = Wall.create(wall_attributes)
-  if @wall.saved?
-    redirect "/"
-  else
-    erb :new_wall
-  end
+  p params
+  @new_wall = params["wall"]
+  @walls = []
+  @walls.push @new_wall
+  p @walls
+  redirect "/"
 end
+
+# destroy
 
 # put
 

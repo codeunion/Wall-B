@@ -1,0 +1,10 @@
+<% if @wall %>
+  <h1>We are looking at wall # <%= @wall.id %>
+  <h2><%= @wall.title %></h2>
+  <ul>
+    <li><%= @wall.description %></li>
+    <li><%= @wall.created_by %></li>
+  </ul>
+<% else %>
+  <H2>there are no kittens at this location</h2>
+<% end %>
