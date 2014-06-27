@@ -132,3 +132,7 @@ post "/walls" do
     # fix any errors.
   end
 end
+
+get '/walls/:id' do |id|
+  @wall = Walls.find(:id: id)
+  erb :wall

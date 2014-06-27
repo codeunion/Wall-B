@@ -1,6 +1,7 @@
 <ul>
 <% @walls.each do |wall| %>
   <li><%=wall.title%></li>
+  <li><a href="/walls/<%= wall.id %>">View details of this wall</a></li>
 <% end %>
 </ul>
 
