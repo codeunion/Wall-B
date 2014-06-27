@@ -134,6 +134,6 @@ post "/walls" do
 end
 
 get '/walls/:id' do |id|
-  @wall = Walls.find(:id: id)
+  @wall = Walls.find(params[:id])
   erb :wall
 end
