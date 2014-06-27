@@ -1,4 +1,5 @@
 require 'sinatra'
+require 'data_mapper'
 
 if ENV['RACK_ENV'] != "production"
   require 'dotenv'
@@ -9,7 +10,6 @@ end
 if ENV['RACK_ENV'] == "production"
   DataMapper.setup(:default, ENV['DATABASE_URL'])
 end
-require 'data_mapper'
 # Here we're telling DataMapper to connect to the database specified by our
 # environment configuration.
 #
