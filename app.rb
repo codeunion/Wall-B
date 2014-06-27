@@ -16,9 +16,7 @@ end
 
 # read
 get "/" do
-  p "params are #{params}"
   @walls = get_walls
-  p @walls
   erb :home
 end
 
@@ -31,11 +29,9 @@ end
 
 # update?
 post "/walls" do
-  p params
   @new_wall = params["wall"]
   @walls = []
   @walls.push @new_wall
-  p @walls
   redirect "/"
 end
 

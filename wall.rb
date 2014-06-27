@@ -13,6 +13,8 @@ class Wall
   property :created_at, DateTime
 end
 
+
+
 DataMapper.finalize
 DataMapper.auto_upgrade!
 
@@ -26,7 +28,7 @@ get "/" do
   erb :homedb
 end
 
-# create 
+# create
 get "/walls/new" do
   @wall = Wall.new
   @walls = Wall.all
@@ -36,7 +38,6 @@ end
 post "/walls" do
   wall_attributes = params["wall"]
   wall_attributes["created_at"] = DateTime.now
-  p "params = #{params}"
   @wall = Wall.create(wall_attributes)
   if @wall.saved?
     redirect "/"
