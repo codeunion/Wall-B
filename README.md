@@ -9,7 +9,7 @@ Links to see my site up and running:
 ## Functional Requirements
 
 - DONE 1. A guest may create a wall with a name,description, and author 
- - DONE 2. A guest may see a list of all walls by name 
+- DONE 2. A guest may see a list of all walls by name 
 - DONE 3. A guest may click on a walls to see its description 
 4. A guest may destroy a wall; but only when they provide the correct author name
 5. A guest may update a wall with a new title, description; but only when they provide the correct author name
