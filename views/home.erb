@@ -1,8 +1,13 @@
+<hr>
+<h2>All Walls</h2>
 <ul>
 <% @walls.each do |wall| %>
-  <li><%=wall.title%></li>
-  <li><a href="/walls/<%= wall.id %>">View details of this wall</a></li>
+  <li><%=wall.title%> <br> 
+    <span>=><a href="/walls/<%= wall.id %>">View details of this wall</a></span>
+  </li>
+  <br>
 <% end %>
 </ul>
-
+<hr>
 <a href="/walls/new">Add Your Own Wall</a>
+<hr>

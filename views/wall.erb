@@ -1,2 +1,9 @@
-<p>@wall.id</p>
-<p>@wall.title</p>
+<p>ID: <%= @wall.id %></p>
+<p>created_by: <%= @wall.created_by %></p>
+<p>title: <%= @wall.title %></p>
+<p>description: <%= @wall.description %></p>
+<p>likes: <%= @wall.likes %></p>
+<p>created_at: <%= @wall.created_at %></p>
+
+
+<a href="/walls/<%= @wall.id %>/messages/new">Leave a message on this wall</a>

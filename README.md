@@ -25,7 +25,7 @@ messages on.
 
 1. A guest may create a wall with a name, description, and author - DONE
 2. A guest may see a list of all walls by name - DONE
-3. A guest may click on a walls to see its description
+3. A guest may click on a walls to see its description - DONE
 4. A guest may add a message to a wall
 5. A guest may see all the messages on a wall
 
