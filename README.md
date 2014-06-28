@@ -21,11 +21,9 @@ Not sure how to make this happen? The wiki should
 
 * A guest may "like" a message
 * See number of likes
-
-DONE *. A guest may add a message to a wall
+* DONE - A guest may add a message to a wall
 * Can like messages
-
-DONE *. A guest may see all the messages on a wall
+* DONE - A guest may see all the messages on a wall
 * A guest may use a shared secret to [encrypt][encryption-and-decryption] a message on a wall.
 * A guest may use a shared secret to [decrypt][encryption-and-decryption]
 * A guest may tag a wall
