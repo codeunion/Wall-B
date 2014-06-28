@@ -1,13 +1,25 @@
+<h1>Welcome to the home page.</h1>
+
 <hr>
-<h2>All Walls</h2>
+
+<h2>This is a "walls" application</h2>
+<p>All "walls" are shown below. If you click "view details", you can leave a
+message on the wall.</p>
+<a href="/walls/new">Add Your Own Wall</a>
+<h3>All Walls</h3>
 <ul>
 <% @walls.each do |wall| %>
-  <li><%=wall.title%> <br> 
+  <li>Wall title: <%=wall.title%> <br> 
     <span>=><a href="/walls/<%= wall.id %>">View details of this wall</a></span>
   </li>
   <br>
 <% end %>
 </ul>
 <hr>
-<a href="/walls/new">Add Your Own Wall</a>
+
+<h3>This is link to an interface of the "cinch" Ruby gem IRC bot I made.</h3>
+<a href="#">Link forthcoming....</a>
 <hr>
+
+<h3>Here are some katas</h3>
+<a href="#">Link to katas forthcoming....</a>

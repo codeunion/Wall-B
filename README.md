@@ -1,25 +1,8 @@
-# Wall-B
+Links to see my site up and running:
+1) Rackspace server + ngrok: http://maxpleaner-sinatra.ngrok.com/
+2) Heroku: http://arcane-retreat-6837.herokuapp.com/
 
-In a world where communication is only allowed over "The Internet"; ONE
-PROGRAMMER stands to make a "killr app".
 
-Your mission? Create a website where people can create "Walls" anyone can add
-messages on.
-
-## Running the App
-
-1. Fork and clone this repository
-1. `bundle install --without development`
-1. `cp .env.example .env`
-1. `rerun -x rackup` # Watches your files and re-starts the app on save.
-
-## Pushing to Production
-
-1. Ensure you've [created a heroku account, installed the heroku toolbelt, and
-   logged in to the heroku toolbelt on your machine.][heroku-quickstart]
-1. `heroku create`
-1. `git push heroku master`
-1. `heroku open`
 
 ## Functional Requirements
 
