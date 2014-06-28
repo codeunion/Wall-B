@@ -1,15 +1,16 @@
 Links to see my site up and running:
+
 1) Rackspace server + ngrok: http://maxpleaner-sinatra.ngrok.com/
+
 2) Heroku: http://arcane-retreat-6837.herokuapp.com/
 
 
 
 ## Functional Requirements
 
-1. A guest may create a wall with a name, description, and author - DONE
-2. A guest may see a list of all walls by name - DONE
-3. A guest may click on a walls to see its description - DONE
-
+- DONE 1. A guest may create a wall with a name,description, and author 
+ - DONE 2. A guest may see a list of all walls by name 
+- DONE 3. A guest may click on a walls to see its description 
 4. A guest may destroy a wall; but only when they provide the correct author name
 5. A guest may update a wall with a new title, description; but only when they provide the correct author name
 
@@ -20,9 +21,9 @@ Not sure how to make this happen? The wiki should
 
 * A guest may "like" a message
 * See number of likes
-*. A guest may add a message to a wall
+DONE *. A guest may add a message to a wall
 * Can like messages
-*. A guest may see all the messages on a wall
+DONE *. A guest may see all the messages on a wall
 * A guest may use a shared secret to [encrypt][encryption-and-decryption] a message on a wall.
 * A guest may use a shared secret to [decrypt][encryption-and-decryption]
 * A guest may tag a wall
