@@ -6,8 +6,14 @@
 <p>created_by: <%= @wall.created_by %></p>
 <p>title: <%= @wall.title %></p>
 <p>description: <%= @wall.description %></p>
-<p>likes: <%= @wall.likes %></p>
 <p>created_at: <%= @wall.created_at %></p>
+<h3>Likes</h3>
+<p>==> 
+  <form method="POST" action="/walls/1">
+  <button type="submit">Like this Wall</button> 
+  </form>
+</p>
+<h3>This post has <%= @wall.likes %> likes.</h3>
 <hr>
 <a href="/walls/<%= @wall.id %>/messages/new">Leave a message on this wall</a>
 <hr>

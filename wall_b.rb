@@ -86,3 +86,11 @@ post '/walls/:id/messages/new' do
   @wall.save
   redirect "/walls/#{@wall.id}"
 end
+
+
+post '/walls/:id' do
+  @wall = Wall.get(params[:id])
+  @wall.likes += 1
+  @wall.save
+  redirect 'walls/#{@wall.id}'
+end
