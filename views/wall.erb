@@ -17,6 +17,7 @@
 <hr>
 <a href="/walls/<%= @wall.id %>/messages/new">Leave a message on this wall</a>
 <hr>
+
 <h2>Messages on this wall</h2>
 <ul>
   <% @messages.each do |message| %>
@@ -25,6 +26,14 @@
   <li> Content: <%= message.content %>
   </li>
   <li> Created At: <%= message.created_at %>
+  </li>
+  <li>
+    <form method="POST" action="/walls/<%= @wall.id %>/messages/<%= message.id %>">
+    <button type="submit">Like this message</button>
+    </form>
+  </li>
+  <li>
+    This post has <%= message.likes %> likes.
   </li>
   <br><br>
   <% end %>

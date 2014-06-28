@@ -67,6 +67,7 @@ end
 
 get '/walls/:id' do
   @wall = Wall.get(params[:id])
+  @wall.save
   @messages = Message.all(:wall_id => @wall.id)
   erb :wall
 end
@@ -93,4 +94,12 @@ post '/walls/:id' do
   @wall.likes += 1
   @wall.save
   redirect 'walls/#{@wall.id}'
+end
+
+post '/walls/:id/messages/:id' do |wall_id, message_id|
+  @wall = Wall.get(wall_id)
+  @message = @wall.message
+  @wall.message.likes += 1
+  @wall.save
+  redirect to '/walls/<%= wall_id %>'
 end

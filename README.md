@@ -19,10 +19,10 @@ Not sure how to make this happen? The wiki should
 
 ## STREEEEETTTCCCCHHH goals (For the over-achievers out there)
 
-* A guest may "like" a message
-* See number of likes
+* MOSTLY DONE - A guest may "like" a wall
+* MOSTLY DONE - See number of likes
 * DONE - A guest may add a message to a wall
-* Can like messages
+* Can like message
 * DONE - A guest may see all the messages on a wall
 * A guest may use a shared secret to [encrypt][encryption-and-decryption] a message on a wall.
 * A guest may use a shared secret to [decrypt][encryption-and-decryption]
