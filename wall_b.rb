@@ -98,8 +98,9 @@ end
 
 post '/walls/:id/messages/:id' do |wall_id, message_id|
   @wall = Wall.get(wall_id)
-  @message = @wall.message
-  @wall.message.likes += 1
-  @wall.save
-  redirect to '/walls/<%= wall_id %>'
+  @message = Message.get(message_id)
+  @message.likes ||= 0
+  @message.likes += 1
+  @message.save
+  redirect '/'
 end
