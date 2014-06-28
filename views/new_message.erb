@@ -1,7 +1,9 @@
+<%= @wall.title %>
+<hr>
 <form method="POST" action="/walls/<%= params[:id] %>/messages/new">
   <label>Your name:</label>
-  <input type="text" name="message[created_by]"></form><br>
+  <input type="text" name="message[created_by]"><br>
   <label>Your message: </label>
-  <textbox name="message[content]"> </textbox><br>
-  <button>Submit message</button>
+  <input type="text" name="message[content]"><br>
+  <button type="submit">Submit message</button>
 </form>

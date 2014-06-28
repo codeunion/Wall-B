@@ -1,9 +1,23 @@
+<hr>
+<h2>Details on the wall</h2>
 <p>ID: <%= @wall.id %></p>
 <p>created_by: <%= @wall.created_by %></p>
 <p>title: <%= @wall.title %></p>
 <p>description: <%= @wall.description %></p>
 <p>likes: <%= @wall.likes %></p>
 <p>created_at: <%= @wall.created_at %></p>
-
-
+<hr>
 <a href="/walls/<%= @wall.id %>/messages/new">Leave a message on this wall</a>
+<hr>
+<h2>Messages on this wall</h2>
+<ul>
+  <% @messages.each do |message| %>
+  <li> Author: <%= message.created_by %>
+  </li>
+  <li> Content: <%= message.content %>
+  </li>
+  <li> Created At: <%= message.created_at %>
+  </li>
+  <br><br>
+  <% end %>
+</ul>

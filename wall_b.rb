@@ -22,15 +22,19 @@ class Wall
   property :description, Text
   property :likes, Integer
   property :created_at, DateTime
+  property :message, Integer
+  has n, :messages
 end
 
 class Message
+  include DataMapper::Resource
   property :created_at, DateTime
   property :likes, Integer
   property :content, Text
   property :created_by, String
   property :id, Serial
-  property :wall_id, Serial
+  property :wall_id, Integer
+  belongs_to :wall
 end
 
 DataMapper.finalize
@@ -63,19 +67,22 @@ end
 
 get '/walls/:id' do
   @wall = Wall.get(params[:id])
+  @messages = Message.all(:wall_id => @wall.id)
   erb :wall
 end
 
 get '/walls/:id/messages/new' do
   @wall = Wall.get(params[:id])
-  @message = Message.new
+  @wall.message = Message.new
   erb :new_message
 end
 
 post '/walls/:id/messages/new' do
+  @wall = Wall.get(params[:id])
   message_attributes = params["message"]
-  
-  message_attributes["created_at"] = Datetime.now
-  @message = Message.create(message_attributes)
-  redirect '/walls/:id'
+  message_attributes["created_at"] = DateTime.now
+  message_attributes["wall_id"] = @wall.id
+  @wall.message = Message.create(message_attributes)
+  @wall.save
+  redirect "/walls/#{@wall.id}"
 end
