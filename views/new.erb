@@ -1,0 +1,16 @@
+<h2>Add a New Wall</h2>
+<form method="POST" action="/walls">
+  <label>Title:
+    <input type="text" name="wall[title]" placeholder="wall title" />
+  </label><br />
+
+  <label>Description:
+    <textarea name="wall[description]" placeholder="describe your wall"></textarea>
+  </label><br />
+
+  <label>Owner:
+    <input type="text" name="wall[created_by]" placeholder="created by"/>
+  </label><br />
+
+  <input type="submit" value="Create Your Wall">
+</form>

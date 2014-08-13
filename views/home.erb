@@ -1,7 +1,10 @@
-<ul>
-  <% @walls.each do |wall| %>
-    <li><%= wall %></li>
-  <% end %>
-</ul>
+<% @walls.each do |wall| %>
+  <h3>Title: <%= wall[:title] %> </h3>
+  <ul>
+    <li>Description: <%= wall[:description] %></li>
+    <li>Created By: <%= wall[:created_by] %></li>
+    <li>Likes: <%= wall[:likes] %></li>
+  </ul>
+<% end %>
 
 <a href="/walls/new">Add Your Own Wall</a>
