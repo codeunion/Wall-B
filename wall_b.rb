@@ -15,12 +15,18 @@ end
 # environment configuration.
 #
 # Heroku creates a postgres database and prepopulates our environment
-# configuration in production us just because we included the `pg` gem in our
+# configuration in production just because we included the `pg` gem in our
 # Gemfile. HOORAY!
 
 
 # Below, we're defining a custom `datatype` to represent a `Wall`. Custom data
 # types that represent the problem domain you're working in are called `models`.
+
+def show_params
+  p params
+end
+
+
 
 class Wall
   # `class` is a keyword for defining custom `datatypes`. These data types can
@@ -103,12 +109,51 @@ get("/") do
   body(erb(:home, :locals => {:walls => walls}))
 end
 
+get("/walls/description") do
+  show_params
+  wall_id = params["wall.id"]
+
+  wall = Wall.get(wall_id)
+  "Hello World"
+  body(erb(:description, :locals => {:wall => wall}))
+end
+
+get("/walls/delete/:id") do
+  show_params
+  wall = Wall.get(params[:id])
+  @@wall_author_form = params[:wall_author_form]
+  body(erb(:delete, :locals=>{:wall=> wall,:wall_author_form=>@@wall_author_form}))
+end
+
 get("/walls/new") do
   wall = Wall.new()
   # We're going to create a new wall, since `views/new_wall.erb` requires a
   # `@wall` instance variable to auto-fill in the form.
   body(erb(:new_wall, :locals => {:wall => wall}))
 end
+
+get("/walls-dynamic/description/:id") do
+  show_params
+
+  wall = Wall.get(params[:id])
+
+  body(erb(:description, :locals => {:wall => wall}))
+end
+
+
+post("/delete") do
+  show_params
+  wall_attributes = params().fetch("wall")
+  if @@wall_author_form == wall_attributes["created_by"]
+    wall = Wall.get(wall_attributes["id"])
+    wall.destroy
+    p "Wall /'#{wall_attributes["title"]}/' has been deleted."
+  else 
+    p "The author name you've submitted is not the author of this wall.</br></br>This wall has not been deleted."
+  end
+end
+
+  
 
 post("/walls") do
   wall_attributes = params().fetch("wall")

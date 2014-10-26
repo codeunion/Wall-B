@@ -1,7 +1,29 @@
-<ul>
+
 <% walls.each() do |wall| %>
-  <li><%= wall.title %></li>
+
+
+<h1><a href="/walls-dynamic/description/<%=wall.id%>"><%= wall.title %></a></h1>
+<%= wall.created_by %>
+</br></br>
+<a href="/walls/delete/<%=wall.id%>">Delete Wall?</a>   
+</br></br>
+
+<!--<h1><a href="/walls/description?wall.id=<%=wall.id%>"><%= wall.title %> </a></h1>   Query Route Method -->
+
+<!--<li><%= wall.title %></li>  Original Line -->
+
+
+
 <% end %>
-</ul>
 
 <a href="/walls/new">Add Your Own Wall</a>
+
+
+
+
+
+
+
+
+
+
