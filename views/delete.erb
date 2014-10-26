@@ -3,9 +3,10 @@ To delete this wall, you must enter the author's name:
 </br></br>
 <form method="POST" action="/delete">
   <label>Author Name:
-    <input name="wall_author_form" type="text" value="<%= wall_author_form %>"/>
+    <input name="created_by" type="text" value="<%= created_by %>"/>
     <input name="wall[created_by]" type="hidden" value="<%= wall.created_by %>"/>
     <input name="wall[id]" type="hidden" value="<%= wall.id %>" />
+    <input name="wall[title]" type="hidden" value="<%= wall.title %>" />
   </label>
 </br></br>
 <button>Delete Wall</button>

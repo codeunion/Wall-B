@@ -121,8 +121,8 @@ end
 get("/walls/delete/:id") do
   show_params
   wall = Wall.get(params[:id])
-  @@wall_author_form = params[:wall_author_form]
-  body(erb(:delete, :locals=>{:wall=> wall,:wall_author_form=>@@wall_author_form}))
+  created_by = params[:created_by]
+  body(erb(:delete, :locals=>{:wall=> wall,:created_by=>created_by}))
 end
 
 get("/walls/new") do
@@ -144,12 +144,16 @@ end
 post("/delete") do
   show_params
   wall_attributes = params().fetch("wall")
-  if @@wall_author_form == wall_attributes["created_by"]
+  created_by = params[:created_by]
+  if created_by == wall_attributes["created_by"]
     wall = Wall.get(wall_attributes["id"])
     wall.destroy
-    p "Wall /'#{wall_attributes["title"]}/' has been deleted."
+  body(erb(
+     "Wall \"#{wall_attributes["title"]}\" has been deleted."
+    
+    ))
   else 
-    p "The author name you've submitted is not the author of this wall.</br></br>This wall has not been deleted."
+  body("The author name you've submitted is not the author of this wall.</br></br>This wall has not been deleted.")
   end
 end
 
