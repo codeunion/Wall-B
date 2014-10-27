@@ -27,7 +27,6 @@ def show_params
 end
 
 
-
 class Wall
   # `class` is a keyword for defining custom `datatypes`. These data types can
   # include data and methods.
@@ -166,10 +165,19 @@ post("/delete") do
   end
 end
 
+post("/likes") do
+  show_params
+  wall = Wall.get(params["wall.id"])
+  wall[:likes] += 1
+  body(erb("This wall now has <%= wall.likes %>"))
+end
+
+
+
 post("/update-check") do
   show_params
   wall_attributes = params().fetch("wall")
-  created_by_guess =  params[:created_by_guess]
+  created_by_guess =  params["created_by_guess"]
   if created_by_guess == wall_attributes["created_by"]
     wall = Wall.get(wall_attributes["id"])
     body(erb(:update, :locals=>{:wall=>wall}))
