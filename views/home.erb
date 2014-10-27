@@ -3,9 +3,10 @@
 
 
 <h1><a href="/walls-dynamic/description/<%=wall.id%>"><%= wall.title %></a></h1>
-<%= wall.created_by %>
+<p>[Wall Created by: <%= wall.created_by %>]</p>
 </br></br>
-<a href="/walls/delete/<%=wall.id%>">Delete Wall?</a>   
+<a href="/walls/delete/<%=wall.id%>">Delete Wall?</a> </br></br>  
+<a href="/walls/update-form/<%=wall.id%>">Update Wall?</a>
 </br></br>
 
 <!--<h1><a href="/walls/description?wall.id=<%=wall.id%>"><%= wall.title %> </a></h1>   Query Route Method -->

@@ -125,12 +125,21 @@ get("/walls/delete/:id") do
   body(erb(:delete, :locals=>{:wall=> wall,:created_by=>created_by}))
 end
 
+
 get("/walls/new") do
   wall = Wall.new()
   # We're going to create a new wall, since `views/new_wall.erb` requires a
   # `@wall` instance variable to auto-fill in the form.
   body(erb(:new_wall, :locals => {:wall => wall}))
 end
+
+get("/walls/update-form/:id") do
+  show_params
+  wall = Wall.get(params[:id])
+  created_by_guess = params[:created_by_guess]
+  body(erb(:update_form, :locals => {:wall => wall,:created_by_guess=>created_by_guess}))
+end
+
 
 get("/walls-dynamic/description/:id") do
   show_params
@@ -157,7 +166,31 @@ post("/delete") do
   end
 end
 
-  
+post("/update-check") do
+  show_params
+  wall_attributes = params().fetch("wall")
+  created_by_guess =  params[:created_by_guess]
+  if created_by_guess == wall_attributes["created_by"]
+    wall = Wall.get(wall_attributes["id"])
+    body(erb(:update, :locals=>{:wall=>wall}))
+  else
+    body("The author name you've submitted is not 
+      the author of this wall.</br></br>You cannot update this wall.")
+  end
+end
+ 
+post("/update") do
+  show_params
+  wall_attributes = params().fetch("wall")
+  wall = Wall.get(wall_attributes["id"])
+  wall[:title] = wall_attributes["title"]
+  wall[:description] = wall_attributes["description"]
+  body("
+   
+     </br>
+     <p>Success!  Wall has been updated.</p>"
+    )
+end
 
 post("/walls") do
   wall_attributes = params().fetch("wall")
