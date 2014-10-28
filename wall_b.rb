@@ -113,7 +113,7 @@ get("/walls/description") do
   wall_id = params["wall.id"]
 
   wall = Wall.get(wall_id)
-  "Hello World"
+
   body(erb(:description, :locals => {:wall => wall}))
 end
 
@@ -136,7 +136,7 @@ get("/walls/update-form/:id") do
   show_params
   wall = Wall.get(params[:id])
   created_by_guess = params[:created_by_guess]
-  body(erb(:update_form, :locals => {:wall => wall,:created_by_guess=>created_by_guess}))
+  body(erb(:edit_request, :locals => {:wall => wall,:created_by_guess=>created_by_guess}))
 end
 
 
@@ -167,9 +167,14 @@ end
 
 post("/likes") do
   show_params
-  wall = Wall.get(params["wall.id"])
-  wall[:likes] += 1
-  body(erb("This wall now has <%= wall.likes %>"))
+#  wall_attributes = params().fetch("wall")
+#  wall = Wall.get(wall_attributes["id"])  Alternate Method
+  wall = Wall.get(params[:wall][:id])
+  wall.likes += 1
+  wall.save
+
+  body(erb("This wall now has <%= wall.likes %> \'Likes\' ", :locals => {:wall => wall}))
+
 end
 
 
@@ -180,7 +185,7 @@ post("/update-check") do
   created_by_guess =  params["created_by_guess"]
   if created_by_guess == wall_attributes["created_by"]
     wall = Wall.get(wall_attributes["id"])
-    body(erb(:update, :locals=>{:wall=>wall}))
+    body(erb(:edit_wall, :locals=>{:wall=>wall}))
   else
     body("The author name you've submitted is not 
       the author of this wall.</br></br>You cannot update this wall.")
@@ -191,13 +196,10 @@ post("/update") do
   show_params
   wall_attributes = params().fetch("wall")
   wall = Wall.get(wall_attributes["id"])
-  wall[:title] = wall_attributes["title"]
-  wall[:description] = wall_attributes["description"]
-  body("
-   
-     </br>
-     <p>Success!  Wall has been updated.</p>"
-    )
+  wall.title = wall_attributes[:title]
+  wall.description = wall_attributes[:description]
+  wall.save
+  body(erb(:updated_wall,:locals => {:wall=>wall}))
 end
 
 post("/walls") do
