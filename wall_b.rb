@@ -1,11 +1,16 @@
 require 'sinatra'
 require 'data_mapper'
 
+
+DataMapper::Logger.new(STDOUT, :debug)
+
+
 if ENV['RACK_ENV'] != "production"
   require 'dotenv'
   Dotenv.load('.env')
   DataMapper.setup(:default, "sqlite:wall.db")
 end
+
 
 if ENV['RACK_ENV'] == "production"
   DataMapper.setup(:default, ENV['DATABASE_URL'])
@@ -83,7 +88,23 @@ class Wall
 
   property :created_at, DateTime
   # This will let us record exacty when a wall is created.
+
+  has n, :message
+
 end
+
+class Message
+  include DataMapper::Resource
+
+  property :id, Serial
+  property :body, String
+  property :likes, Integer, :default => 0
+  belongs_to :wall
+end
+
+
+
+
 
 
 # PHEW! That's a lot of new ideas! But don't worry; you'll get it! Understanding
@@ -114,6 +135,7 @@ get("/walls/description") do
 
   wall = Wall.get(wall_id)
 
+
   body(erb(:description, :locals => {:wall => wall}))
 end
 
@@ -126,7 +148,7 @@ end
 
 
 get("/walls/new") do
-  wall = Wall.new()
+  wall = Wall.create()
   # We're going to create a new wall, since `views/new_wall.erb` requires a
   # `@wall` instance variable to auto-fill in the form.
   body(erb(:new_wall, :locals => {:wall => wall}))
@@ -156,13 +178,13 @@ post("/delete") do
   if created_by == wall_attributes["created_by"]
     wall = Wall.get(wall_attributes["id"])
     wall.destroy
-  body(erb(
-     "Wall \"#{wall_attributes["title"]}\" has been deleted."
-    
-    ))
-  else 
-  body("The author name you've submitted is not the author of this wall.</br></br>This wall has not been deleted.")
+    body(erb("Wall \"#{wall_attributes["title"]}\" has been deleted."
+  ))
+  else
+    body("The author name you've submitted is not the author of this wall.</br></br>This wall has not been deleted.")
   end
+  sleep(2)
+  redirect("/")
 end
 
 post("/likes") do
@@ -172,11 +194,33 @@ post("/likes") do
   wall = Wall.get(params[:wall][:id])
   wall.likes += 1
   wall.save
-
   body(erb("This wall now has <%= wall.likes %> \'Likes\' ", :locals => {:wall => wall}))
+  sleep(2)
+  redirect("/")
+
 
 end
 
+post("/message") do
+  show_params
+  wall = Wall.get(params[:wall][:id])
+  message = Message.create()
+  message.body = params[:message][:body]
+  body(erb("The message <%= message.body %> has been added to Wall \'<%= wall.title %> \'", :locals => {:wall=>wall,:message=>message}))
+  # sleep(2)
+  # redirect("/")
+
+end
+
+post("/message/like") do
+  show_params
+  message = Message.get(params[:message][:id])
+  message.likes += 1
+  message.save
+  body(erb("This message now has <%= message.likes %>\'Likes\'", :locals => {:message=> message}))
+  sleep(2)
+  redirect("/")
+end
 
 
 post("/update-check") do
@@ -187,11 +231,13 @@ post("/update-check") do
     wall = Wall.get(wall_attributes["id"])
     body(erb(:edit_wall, :locals=>{:wall=>wall}))
   else
-    body("The author name you've submitted is not 
+    body("The author name you've submitted is not
       the author of this wall.</br></br>You cannot update this wall.")
+    sleep(2)
+    redirect("/")
   end
 end
- 
+
 post("/update") do
   show_params
   wall_attributes = params().fetch("wall")
