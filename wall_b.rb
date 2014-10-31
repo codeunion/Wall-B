@@ -148,7 +148,7 @@ end
 
 
 get("/walls/new") do
-  wall = Wall.create()
+  wall = Wall.new()
   # We're going to create a new wall, since `views/new_wall.erb` requires a
   # `@wall` instance variable to auto-fill in the form.
   body(erb(:new_wall, :locals => {:wall => wall}))
@@ -171,12 +171,11 @@ get("/walls-dynamic/description/:id") do
 end
 
 
-post("/delete") do
+delete("/walls/:id") do
   show_params
-  wall_attributes = params().fetch("wall")
+  wall = Wall.get(params[:id])
   created_by = params[:created_by]
-  if created_by == wall_attributes["created_by"]
-    wall = Wall.get(wall_attributes["id"])
+  if created_by == wall[:created_by]
     wall.destroy
     body(erb("Wall \"#{wall_attributes["title"]}\" has been deleted."
   ))
@@ -201,20 +200,19 @@ post("/likes") do
 
 end
 
-post("/message") do
+post("/:wall_id/messages") do
   show_params
-  wall = Wall.get(params[:wall][:id])
-  message = Message.create()
-  message.body = params[:message][:body]
+  wall = Wall.get(params[:wall_id])
+  wall.message = Message.create(:body => params[:message][:body])
   body(erb("The message <%= message.body %> has been added to Wall \'<%= wall.title %> \'", :locals => {:wall=>wall,:message=>message}))
-  # sleep(2)
-  # redirect("/")
+  sleep(2)
+  redirect("/")
 
 end
 
-post("/message/like") do
+post("/message/:id/likes") do
   show_params
-  message = Message.get(params[:message][:id])
+  message = Message.get(params[:id])
   message.likes += 1
   message.save
   body(erb("This message now has <%= message.likes %>\'Likes\'", :locals => {:message=> message}))

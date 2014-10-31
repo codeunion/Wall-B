@@ -4,19 +4,16 @@
 <h3>Messages</h3>
 
 <% wall.message.each() do |message| %>
-Visitor Message: "<%= message.body %>" 
-- <%= message.likes%> \'Likes\' "
-<form method="POST" action="/message/like">
-	<input name = "message[id]" type="hidden" value="<%= message.id %>" />
-
+Message: "<%= message.body %>"
+- <%= message.likes%> 'Likes'
+<form method="POST" action="/message/:id/likes">
 	<button>Like this message</button>
 </form>
 <% end %>
 
-<form method="POST" action="/message">
+<form method="POST" action="/:wall_id/messages">
 	<label>Add a message to this wall:
-		<input name = "message[body]" type="text"/>
-		<input name = "wall[id]" type = "hidden" value="<%= wall.id %>" />
-	</label>		
-	<button>Add a message</button>
+	<input name = "message[body]" type="text"/>
+	</label>
+		<button>Add a message</button>
 </form>
