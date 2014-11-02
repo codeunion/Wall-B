@@ -6,6 +6,10 @@ gem "sinatra"
 gem "datamapper"
 # DataMapper is a library for interacting with databases
 
+gem "rack-flash3"
+
+gem "sinatra-redirect-with-flash"
+
 group :development do
   # `group`s allow you to not install certain gems in certain environments.
   # It lets you "skip" installing gems, based upon where the application is

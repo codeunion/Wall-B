@@ -5,12 +5,12 @@
 
 <% wall.message.each() do |message| %>
 <%= message.body %> - <%= message.likes%> Likes
-	<form method="POST" action="/messages/<%=message.id%>/likes">
+	<form method="POST" action="/messages/<%= message.id %>/likes">
 		<button>Like this message</button>
 	</form>
 <% end %>
 
-<form method="POST" action="/walls/<%=wall.id%>/messages">
+<form method="POST" action="/walls/<%= wall.id %>/messages">
 	<label>Add a message to this wall:
 	<input name = "message[body]" type="text"/>
 	</label>

@@ -1,4 +1,12 @@
 
+<head>
+  <meta charset="utf8">
+  <link href="/reset.css" rel="stylesheet">
+  <link href="/style.css" rel="stylesheet">
+</head>
+
+<% flash[:notice] = "Test Flash Message" %>
+
 <% walls.each() do |wall| %>
 
 
@@ -23,8 +31,7 @@
 
 <% end %>
 
-
-<form method = "POST" action="/walls/new">
+<form method = "GET" action="/walls/new">
 <button>Add Your Own Wall</button>
 </form>
 

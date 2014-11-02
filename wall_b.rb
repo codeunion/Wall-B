@@ -1,9 +1,13 @@
 require 'sinatra'
 require 'data_mapper'
+require 'rack-flash'
+require 'sinatra/redirect_with_flash'
 
+enable :sessions
+use Rack::Flash, :sweep => true
 
 DataMapper::Logger.new(STDOUT, :debug)
-
+DataMapper::Model.raise_on_save_failure
 
 if ENV['RACK_ENV'] != "production"
   require 'dotenv'
@@ -228,7 +232,10 @@ put("/walls/:id") do
   wall.title = wall_attributes[:title]
   wall.description = wall_attributes[:description]
   wall.save
-  redirect("/walls/#{wall.id}/edit_success")
+  flash[:notice] = "Wall \"<%= wall.title %>\" has been updated."
+
+
+  # redirect("/walls/#{wall.id}/edit_success")
 end
 
 get("/walls/:id/edit_success") do
@@ -269,10 +276,9 @@ delete("/walls/:id") do
   created_by = params[:created_by]
   if created_by == wall[:created_by]
     wall.destroy
-    body(erb("Wall \'<%=wall.title%>\' has been deleted.",:locals => {:wall=>wall}))
-  else
-    body("The author name you've submitted is not the author of this wall.</br></br>This wall has not been deleted.")
+    flash[:notice] = "Wall \"<%=wall.title%>\" has been deleted."
+   else
+    flash[:error] = "The author name you've submitted is not the author of this wall.</br></br>This wall has not been deleted."
   end
-  # sleep(10)
-  # redirect("/")
+  redirect("/")
 end

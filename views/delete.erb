@@ -1,7 +1,14 @@
+
+<head>
+  <meta charset="utf8">
+  <link href="/reset.css" rel="stylesheet">
+  <link href="/style.css" rel="stylesheet">
+</head>
+
 <h2>Delete a Wall</h2>
-To delete the '<%=wall.title%>' wall, you must enter the author's name:
+To delete the '<%= wall.title %>' wall, you must enter the author's name:
 </br></br>
-<form method="POST" action="/walls/<%=wall.id%>">
+<form method="POST" action="/walls/<%= wall.id %>">
   <label>Author Name:
     <input name="created_by" type="text" value="<%= created_by %>"/>
     <input type="hidden" name="_method" value="delete">
