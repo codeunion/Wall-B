@@ -3,31 +3,32 @@
 
 
 <h1><a href="/walls-dynamic/description/<%=wall.id%>"><%= wall.title %></a></h1>
-<p>
+
 <form method = "POST" action="/likes">
 	<input name="wall[id]" type="hidden" value="<%= wall.id %>" />
 <%= wall.likes %> Likes
 	<button>Like this Wall</button>
 </form>
 
-</br>
 [Wall Created by: <%= wall.created_by %>]
+</br>
 
-</p>
+<form method = "GET" action="/walls/<%=wall.id%>/delete">
+<button>Delete Wall?</button>
+</form>
 
-<a href="/walls/delete/<%=wall.id%>">Delete Wall?</a> </br></br>  
-<a href="/walls/update-form/<%=wall.id%>">Update Wall?</a>
-</br></br>
-
-<!--<h1><a href="/walls/description?wall.id=<%=wall.id%>"><%= wall.title %> </a></h1>   Query Route Method -->
-
-<!--<li><%= wall.title %></li>  Original Line -->
-
-
+<form method = "GET" action="/walls/<%=wall.id%>/edit_request">
+<button>Update Wall?</button>
+</form>
 
 <% end %>
 
-<a href="/walls/new">Add Your Own Wall</a>
+
+<form method = "POST" action="/walls/new">
+<button>Add Your Own Wall</button>
+</form>
+
+
 
 
 

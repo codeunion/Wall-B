@@ -1,10 +1,11 @@
 <h2>Update</h2>
-Success!  That is the correct author for this wall
+That is the correct author for this wall.
 </br>
 Enter the values you wish to change:
 </br></br>
 
-<form method = "POST" action ="/update">
+<form method = "POST" action ="/walls/<%=wall.id%>">
+  <input type="hidden" name="_method" value="put">
 	<label>Title</label>
 	<input name = "wall[title]" type = "text" value = "<%=wall.title%>" >
 	</br><label>Description</label>

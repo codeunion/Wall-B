@@ -132,20 +132,29 @@ end
 get("/walls/description") do
   show_params
   wall_id = params["wall.id"]
-
   wall = Wall.get(wall_id)
-
-
   body(erb(:description, :locals => {:wall => wall}))
 end
 
-get("/walls/delete/:id") do
+get ("/walls/:id/delete") do
   show_params
   wall = Wall.get(params[:id])
   created_by = params[:created_by]
   body(erb(:delete, :locals=>{:wall=> wall,:created_by=>created_by}))
 end
 
+get ("/walls/:id/edit_request") do
+  show_params
+  wall = Wall.get(params[:id])
+  created_by = params[:created_by]
+  body(erb(:edit_request, :locals=>{:wall=> wall,:created_by=>created_by}))
+end
+
+get ("/walls/:id/edit") do
+  show_params
+  wall = Wall.get(params[:id])
+  body(erb(:edit_wall, :locals=>{:wall=> wall}))
+end
 
 get("/walls/new") do
   wall = Wall.new()
@@ -154,36 +163,12 @@ get("/walls/new") do
   body(erb(:new_wall, :locals => {:wall => wall}))
 end
 
-get("/walls/update-form/:id") do
-  show_params
-  wall = Wall.get(params[:id])
-  created_by_guess = params[:created_by_guess]
-  body(erb(:edit_request, :locals => {:wall => wall,:created_by_guess=>created_by_guess}))
-end
-
-
 get("/walls-dynamic/description/:id") do
   show_params
 
   wall = Wall.get(params[:id])
 
   body(erb(:description, :locals => {:wall => wall}))
-end
-
-
-delete("/walls/:id") do
-  show_params
-  wall = Wall.get(params[:id])
-  created_by = params[:created_by]
-  if created_by == wall[:created_by]
-    wall.destroy
-    body(erb("Wall \"#{wall_attributes["title"]}\" has been deleted."
-  ))
-  else
-    body("The author name you've submitted is not the author of this wall.</br></br>This wall has not been deleted.")
-  end
-  sleep(2)
-  redirect("/")
 end
 
 post("/likes") do
@@ -200,17 +185,17 @@ post("/likes") do
 
 end
 
-post("/:wall_id/messages") do
+post("/walls/:wall_id/messages") do
   show_params
   wall = Wall.get(params[:wall_id])
-  wall.message = Message.create(:body => params[:message][:body])
+  message = Message.create(:body => params[:message][:body],:wall_id => params[:wall_id])
   body(erb("The message <%= message.body %> has been added to Wall \'<%= wall.title %> \'", :locals => {:wall=>wall,:message=>message}))
   sleep(2)
   redirect("/")
 
 end
 
-post("/message/:id/likes") do
+post("/messages/:id/likes") do
   show_params
   message = Message.get(params[:id])
   message.likes += 1
@@ -236,15 +221,23 @@ post("/update-check") do
   end
 end
 
-post("/update") do
+put("/walls/:id") do
   show_params
   wall_attributes = params().fetch("wall")
   wall = Wall.get(wall_attributes["id"])
   wall.title = wall_attributes[:title]
   wall.description = wall_attributes[:description]
   wall.save
-  body(erb(:updated_wall,:locals => {:wall=>wall}))
+  redirect("/walls/#{wall.id}/edit_success")
 end
+
+get("/walls/:id/edit_success") do
+  wall = Wall.get(params[:id])
+  body(erb(:updated_wall,:locals => {:wall=>wall}))
+  # sleep(10)
+  # redirect("/")
+end
+
 
 post("/walls") do
   wall_attributes = params().fetch("wall")
@@ -268,4 +261,18 @@ post("/walls") do
     # If we *can't* create the wall; We'll redisplay the form so the user can
     # fix any errors.
   end
+end
+
+delete("/walls/:id") do
+  show_params
+  wall = Wall.get(params[:id])
+  created_by = params[:created_by]
+  if created_by == wall[:created_by]
+    wall.destroy
+    body(erb("Wall \'<%=wall.title%>\' has been deleted.",:locals => {:wall=>wall}))
+  else
+    body("The author name you've submitted is not the author of this wall.</br></br>This wall has not been deleted.")
+  end
+  # sleep(10)
+  # redirect("/")
 end
