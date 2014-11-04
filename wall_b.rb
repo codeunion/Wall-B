@@ -233,9 +233,8 @@ put("/walls/:id") do
   wall.description = wall_attributes[:description]
   wall.save
   flash[:notice] = "Wall \"<%= wall.title %>\" has been updated."
-
-
-  # redirect("/walls/#{wall.id}/edit_success")
+  flash[:johns_notice] = "Wall '#{wall.title}' has been updated."
+  redirect("/walls/#{wall.id}/edit_success")
 end
 
 get("/walls/:id/edit_success") do
