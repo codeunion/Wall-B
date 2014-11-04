@@ -1,5 +1,13 @@
 require 'sinatra'
 require 'data_mapper'
+require 'rack-flash'
+require 'sinatra/redirect_with_flash'
+
+enable :sessions
+use Rack::Flash, :sweep => true
+
+DataMapper::Logger.new(STDOUT, :debug)
+DataMapper::Model.raise_on_save_failure
 
 if ENV['RACK_ENV'] != "production"
   require 'dotenv'
@@ -8,6 +16,7 @@ if ENV['RACK_ENV'] != "production"
   DataMapper.setup(:default, "sqlite:wall.db")
 end
 
+
 if ENV['RACK_ENV'] == "production"
   DataMapper.setup(:default, ENV['DATABASE_URL'])
 end
@@ -15,12 +24,17 @@ end
 # environment configuration.
 #
 # Heroku creates a postgres database and prepopulates our environment
-# configuration in production us just because we included the `pg` gem in our
+# configuration in production just because we included the `pg` gem in our
 # Gemfile. HOORAY!
 
 
 # Below, we're defining a custom `datatype` to represent a `Wall`. Custom data
 # types that represent the problem domain you're working in are called `models`.
+
+def show_params
+  p params
+end
+
 
 class Wall
   # `class` is a keyword for defining custom `datatypes`. These data types can
@@ -78,7 +92,23 @@ class Wall
 
   property :created_at, DateTime
   # This will let us record exacty when a wall is created.
+
+  has n, :message
+
 end
+
+class Message
+  include DataMapper::Resource
+
+  property :id, Serial
+  property :body, String
+  property :likes, Integer, :default => 0
+  belongs_to :wall
+end
+
+
+
+
 
 
 # PHEW! That's a lot of new ideas! But don't worry; you'll get it! Understanding
@@ -116,12 +146,117 @@ get("/") do
   # The `body` method sets the body of the http response sent to the browser.
 end
 
+get("/walls/description") do
+  show_params
+  wall_id = params["wall.id"]
+  wall = Wall.get(wall_id)
+  body(erb(:description, :locals => {:wall => wall}))
+end
+
+get ("/walls/:id/delete") do
+  show_params
+  wall = Wall.get(params[:id])
+  created_by = params[:created_by]
+  body(erb(:delete, :locals=>{:wall=> wall,:created_by=>created_by}))
+end
+
+get ("/walls/:id/edit_request") do
+  show_params
+  wall = Wall.get(params[:id])
+  created_by = params[:created_by]
+  body(erb(:edit_request, :locals=>{:wall=> wall,:created_by=>created_by}))
+end
+
+get ("/walls/:id/edit") do
+  show_params
+  wall = Wall.get(params[:id])
+  body(erb(:edit_wall, :locals=>{:wall=> wall}))
+end
+
 get("/walls/new") do
   wall = Wall.new()
   # We're going to create a new wall, since `views/new_wall.erb` requires a
   # `wall` local variable to auto-fill in the form.
   body(erb(:new_wall, { :locals => {:wall => wall} }))
 end
+
+get("/walls-dynamic/description/:id") do
+  show_params
+
+  wall = Wall.get(params[:id])
+
+  body(erb(:description, :locals => {:wall => wall}))
+end
+
+post("/likes") do
+  show_params
+#  wall_attributes = params().fetch("wall")
+#  wall = Wall.get(wall_attributes["id"])  Alternate Method
+  wall = Wall.get(params[:wall][:id])
+  wall.likes += 1
+  wall.save
+  body(erb("This wall now has <%= wall.likes %> \'Likes\' ", :locals => {:wall => wall}))
+  sleep(2)
+  redirect("/")
+
+
+end
+
+post("/walls/:wall_id/messages") do
+  show_params
+  wall = Wall.get(params[:wall_id])
+  message = Message.create(:body => params[:message][:body],:wall_id => params[:wall_id])
+  body(erb("The message <%= message.body %> has been added to Wall \'<%= wall.title %> \'", :locals => {:wall=>wall,:message=>message}))
+  sleep(2)
+  redirect("/")
+
+end
+
+post("/messages/:id/likes") do
+  show_params
+  message = Message.get(params[:id])
+  message.likes += 1
+  message.save
+  body(erb("This message now has <%= message.likes %>\'Likes\'", :locals => {:message=> message}))
+  sleep(2)
+  redirect("/")
+end
+
+
+post("/update-check") do
+  show_params
+  wall_attributes = params().fetch("wall")
+  created_by_guess =  params["created_by_guess"]
+  if created_by_guess == wall_attributes["created_by"]
+    wall = Wall.get(wall_attributes["id"])
+    body(erb(:edit_wall, :locals=>{:wall=>wall}))
+  else
+    body("The author name you've submitted is not
+      the author of this wall.</br></br>You cannot update this wall.")
+    sleep(2)
+    redirect("/")
+  end
+end
+
+put("/walls/:id") do
+  show_params
+  wall_attributes = params().fetch("wall")
+  wall = Wall.get(wall_attributes["id"])
+  wall.title = wall_attributes[:title]
+  wall.description = wall_attributes[:description]
+  wall.save
+  flash[:notice] = "Wall \"<%= wall.title %>\" has been updated."
+  flash[:johns_notice] = "Wall '#{wall.title}' has been updated."
+  redirect("/walls/#{wall.id}/edit_success")
+end
+
+get("/walls/:id/edit_success") do
+  wall = Wall.get(params[:id])
+  body(erb(:updated_wall,:locals => {:wall=>wall}))
+  # sleep(10)
+  # redirect("/")
+end
+
 
 post("/walls") do
   wall_attributes = params().fetch("wall")
@@ -145,4 +280,17 @@ post("/walls") do
     # If we *can't* create the wall; We'll redisplay the form so the user can
     # fix any errors.
   end
+end
+
+delete("/walls/:id") do
+  show_params
+  wall = Wall.get(params[:id])
+  created_by = params[:created_by]
+  if created_by == wall[:created_by]
+    wall.destroy
+    flash[:notice] = "Wall \"<%=wall.title%>\" has been deleted."
+   else
+    flash[:error] = "The author name you've submitted is not the author of this wall.</br></br>This wall has not been deleted."
+  end
+  redirect("/")
 end

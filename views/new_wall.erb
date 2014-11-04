@@ -8,15 +8,17 @@
   </label><br />
 
   <label>Description:
-    <textarea name="wall[description]"><%= wall.description %></textarea>
+    <textarea name="wall[description]" value="<%= wall.description %>" /> </textarea>
     <!-- We can add even more keys to the hash that will become `params[:wall]`;
-         in this case, we now have params[:wall]["description"] available in our
+         in this case, we now have params[:wall]["description"] 
          available in our route -->
   </label><br />
 
   <label>Owner:
     <input type="text" name="wall[created_by]" value="<%= wall.created_by %>" />
   </label><br />
+
+    <input type="hidden" name="wall[likes]" value= 0 />
 
   <button>Create the Wall!</button>
 </form>

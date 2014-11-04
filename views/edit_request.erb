@@ -1,0 +1,13 @@
+<h2>Edit Request</h2>
+To edit this wall, you must enter the author's name:
+</br></br>
+<form method = "GET" action ="/walls/<%=wall.id%>/edit">
+	<label>Author Name:
+		<input name = "created_by_guess" type = "text">
+	</label>
+	<input name = "wall[created_by]" type = "hidden" value =
+		"<%=wall.created_by%>" >
+	<input name="wall[id]" type="hidden" value="<%= wall.id %>" />
+</br></br>
+<button>Retrieve this Wall</button>
+</form>

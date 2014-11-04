@@ -1,7 +1,48 @@
-<ul>
-<% walls.each() do |wall| %>
-  <li><%= wall.title %></li>
-<% end %>
-</ul>
 
-<a href="/walls/new">Add Your Own Wall</a>
+<head>
+  <meta charset="utf8">
+  <link href="/reset.css" rel="stylesheet">
+  <link href="/style.css" rel="stylesheet">
+</head>
+
+<% flash[:notice] = "Test Flash Message" %>
+
+<% walls.each() do |wall| %>
+
+
+<h1><a href="/walls-dynamic/description/<%=wall.id%>"><%= wall.title %></a></h1>
+
+<form method = "POST" action="/likes">
+	<input name="wall[id]" type="hidden" value="<%= wall.id %>" />
+<%= wall.likes %> Likes
+	<button>Like this Wall</button>
+</form>
+
+[Wall Created by: <%= wall.created_by %>]
+</br>
+
+<form method = "GET" action="/walls/<%=wall.id%>/delete">
+<button>Delete Wall?</button>
+</form>
+
+<form method = "GET" action="/walls/<%=wall.id%>/edit_request">
+<button>Update Wall?</button>
+</form>
+
+<% end %>
+
+<form method = "GET" action="/walls/new">
+<button>Add Your Own Wall</button>
+</form>
+
+
+
+
+
+
+
+
+
+
+
+
