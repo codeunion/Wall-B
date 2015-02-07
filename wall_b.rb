@@ -146,3 +146,9 @@ post('/walls') do
     # fix any errors.
   end
 end
+
+get('/walls/:wall_title') do
+  wall = Wall.first(:title => (params[:wall_title]))  #params[:wall_title])
+
+  "#{wall.title}: #{wall.description}"
+end

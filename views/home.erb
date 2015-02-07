@@ -1,6 +1,6 @@
 <ul>
 <% walls.each() do |wall| %>
-  <li><%= wall.title %></li>
+  <li><a href="/walls/<%= wall.title %>"><%= wall.title %></a></li>
 <% end %>
 </ul>
 
