@@ -1,0 +1,6 @@
+<!-- GET /walls/:wall_title/delete routes here-->
+Are you sure you want to delete "<%= @wall.title %>"?<br>
+ENTER OWNER NAME TO CONFIRM DELETE<br>
+<form method="post" action="/walls/<%= @wall.title %>/destroy">
+  <input type="text" name="created_by">
+</form>

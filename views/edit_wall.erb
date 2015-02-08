@@ -1,0 +1,16 @@
+<!-- GET /walls/:wall_title/edit directs here -->
+<h2>Edit "<%= @wall.title %>"</h2>
+<form method="post" action="/walls/<%= @wall.title %>/update">
+  <label>Title:</label>
+  <input type="text" name="title" value="<%= @wall.title %>"><br>
+
+  <label>Description:</label>
+  <input type="text" name="description" value="<%= @wall.description %>"><br>
+
+  <label>Owner:</label>
+  <input type="text" name="created_by"><br>
+
+  <button>Update</button>
+</form>
+
+<a href="/">Home</a>
