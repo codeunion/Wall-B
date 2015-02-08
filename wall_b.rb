@@ -80,7 +80,10 @@ class Wall
   # This will let us record exacty when a wall is created.
 end
 
-
+def this_wall
+  # finds Wall by title in params
+  Wall.first(:title => (params[:wall_title]))
+end
 # PHEW! That's a lot of new ideas! But don't worry; you'll get it! Understanding
 # programming takes practice!
 
@@ -148,7 +151,43 @@ post('/walls') do
 end
 
 get('/walls/:wall_title') do
-  wall = Wall.first(:title => (params[:wall_title]))  #params[:wall_title])
+  wall = this_wall  #params[:wall_title])
 
   "#{wall.title}: #{wall.description}"
+end
+
+get('/walls/:wall_title/edit') do
+  @wall = this_wall
+
+  erb :edit_wall
+end
+
+post('/walls/:wall_title/update') do
+  if params[:created_by] == this_wall.created_by
+
+    this_wall.update( :title        => params[:title],
+                      :description  => params[:description],
+                      :created_by   => params[:created_by]
+      )
+
+    redirect '/'
+  else
+    erb :denied
+  end
+end
+
+get('/walls/:wall_title/delete') do
+  @wall = this_wall
+
+  erb :delete_wall
+end
+
+post('/walls/:wall_title/destroy') do
+  if params[:created_by] == this_wall.created_by
+    this_wall.destroy
+
+    redirect '/'
+  else
+    erb :denied
+  end
 end
