@@ -1,6 +1,14 @@
+<!-- Home/Index Page -->
+<title>Wall-B</title>
+
+<h1>Wall-B</h1>
 <ul>
 <% walls.each() do |wall| %>
-  <li><%= wall.title %></li>
+  <li><a href="/walls/<%= wall.title %>"><%= wall.title %></a></li>
+  <ul>
+    <li><a href="/walls/<%= wall.title %>/edit">Edit</a></li>
+    <li><a href="/walls/<%= wall.title %>/delete">Delete</a></li>
+  </ul>
 <% end %>
 </ul>
 
