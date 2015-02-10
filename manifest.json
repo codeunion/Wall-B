@@ -1,0 +1,14 @@
+{
+  "category": "project",
+  "tags": [
+    "ruby",
+    "sinatra",
+    "datamapper",
+    "sqlite",
+    "heroku",
+    "building-crud-web-apps",
+    "relational-databases",
+    "html"
+  ],
+  "notes": "Bundles guides into wiki."
+}
